@@ -80,7 +80,7 @@ export const PLAN_CONFIG: Record<
   TCompanyPlan,
   { price: number; activeJobLimit: number; teamMembers: number }
 > = {
-  [COMPANY_PLAN.FREE]: { price: 0, activeJobLimit: 2, teamMembers: 1 },
+  [COMPANY_PLAN.FREE]: { price: 0, activeJobLimit: 2, teamMembers: 0 },
   [COMPANY_PLAN.BOOTSTRAP]: { price: 29, activeJobLimit: 3, teamMembers: Infinity },
   [COMPANY_PLAN.STARTUP]: { price: 49, activeJobLimit: 10, teamMembers: Infinity },
   [COMPANY_PLAN.BUSINESS]: { price: 129, activeJobLimit: 20, teamMembers: Infinity },

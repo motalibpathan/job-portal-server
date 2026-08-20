@@ -19,6 +19,7 @@ import {
   joinTeamBodySchema,
 } from "../../../../validators/job/companyValidator";
 import { companyIdOrUsernameParamSchema } from "../../../../validators/job/jobValidator";
+import { PLAN_CONFIG } from "../../../../constants/jobEnums";
 
 const router = express.Router();
 
@@ -323,6 +324,13 @@ router.post(
         .json({ message: "Only the company owner can invite members" });
     }
 
+    const planConfig = PLAN_CONFIG[company.plan || "free"];
+    if (company.teamMemberUserIds.length >= planConfig.teamMembers) {
+      return res
+        .status(403)
+        .json({ message: "Upgrade your plan to add team members" });
+    }
+
     const token = crypto.randomBytes(16).toString("hex");
     const expiresAt = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000); // 3 days
 
@@ -384,6 +392,13 @@ router.post(
 
     if (company.teamMemberUserIds.some((id: mongoose.Types.ObjectId) => id.equals(userId))) {
       return res.status(400).json({ message: "You are already a member of this company" });
+    }
+
+    const planConfig = PLAN_CONFIG[company.plan || "free"];
+    if (company.teamMemberUserIds.length >= planConfig.teamMembers) {
+      return res
+        .status(403)
+        .json({ message: "This company has reached its team member limit. Upgrade to add more." });
     }
 
     company.teamMemberUserIds.push(userId);
