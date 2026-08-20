@@ -1,0 +1,20 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/job-portal-server
+    overwrite: true
+hooks:
+  ApplicationStop:
+    - location: aws-scripts/application_stop.sh
+      timeout: 3000
+      runas: ubuntu
+  BeforeInstall:
+    - location: aws-scripts/before_install.sh
+      timeout: 3000
+      runas: ubuntu
+  ApplicationStart:
+    - location: aws-scripts/application_start.sh
+      timeout: 3000
+      runas: ubuntu
+file_exists_behavior: OVERWRITE

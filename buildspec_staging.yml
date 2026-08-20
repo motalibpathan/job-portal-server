@@ -1,0 +1,56 @@
+# Do not change version. This is the version of aws buildspec, not the version of your buildspec file.
+version: 0.2
+
+env:
+  variables:
+    AWS_REGION: "ap-south-1"
+    AWS_ACCOUNT_ID: "824039889403"
+    IMAGE_REPO_NAME: "job-portal/server/staging"
+    IMAGE_TAG: "latest"
+  parameter-store:
+    PORT: "/job-portal/server/staging/PORT"
+    # DEPLOYMENTS
+    DEPLOY: "/job-portal/server/staging/DEPLOY"
+    LOG_DEPLOY: "/job-portal/server/staging/LOG_DEPLOY"
+    # DB
+    DB_URL: "/job-portal/server/staging/DB_URL"
+    REDIS_URL: "/job-portal/server/staging/REDIS_URL"
+    # CLIENT SECRETS
+    CLIENT_SECRET: "/job-portal/server/staging/CLIENT_SECRET"
+    CLIENT_ACCESS_TOKEN_EXPIRATION_TIME_SECOND: "/job-portal/server/staging/CLIENT_ACCESS_TOKEN_EXPIRATION_TIME_SECOND"
+    CLIENT_REFRESH_TOKEN_EXPIRATION_TIME_SECOND: "/job-portal/server/staging/CLIENT_REFRESH_TOKEN_EXPIRATION_TIME_SECOND"
+    # ADMIN SECRETS
+    ADMIN_SECRET: "/job-portal/server/staging/ADMIN_SECRET"
+    ADMIN_ACCESS_TOKEN_EXPIRATION_TIME_SECOND: "/job-portal/server/staging/ADMIN_ACCESS_TOKEN_EXPIRATION_TIME_SECOND"
+    ADMIN_REFRESH_TOKEN_EXPIRATION_TIME_SECOND: "/job-portal/server/staging/ADMIN_REFRESH_TOKEN_EXPIRATION_TIME_SECOND"
+    # SITE URL
+    SITE_URL: "/job-portal/server/staging/SITE_URL"
+    ADMIN_DASHBOARD_URL: "/job-portal/server/staging/ADMIN_DASHBOARD_URL"
+    ORDERS_DASHBOARD_URL: "/job-portal/server/staging/ORDERS_DASHBOARD_URL"
+    # AWS GROUP AND KEYS
+    AWS_ACCESS_KEY: "/job-portal/server/staging/AWS_ACCESS_KEY"
+    AWS_ACCESS_KEY_SECRET: "/job-portal/server/staging/AWS_ACCESS_KEY_SECRET"
+    AWS_ACCESS_REGION: "/job-portal/server/staging/AWS_ACCESS_REGION"
+    # S3 BUCKET
+    S3_BUCKET: "/job-portal/server/staging/S3_BUCKET"
+    # LOGGER
+    CLOUDWATCH_LOG_STREAM: "/job-portal/server/staging/CLOUDWATCH_LOG_STREAM"
+    # emailer
+    EMAIL_MAIN: "/job-portal/server/staging/EMAIL_MAIN"
+    EMAIL_NO_REPLY: "/job-portal/server/staging/EMAIL_NO_REPLY"
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG

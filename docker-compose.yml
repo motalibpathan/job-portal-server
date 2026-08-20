@@ -1,0 +1,15 @@
+services:
+  job-portal-server-service:
+    container_name: job-portal-server-container
+    image: job-portal-server-image
+    build: .
+    restart: always
+    ports:
+      - "7000:7000"
+# the following would be needed for local docker setup with redis
+#   depends_on:
+#     - redis
+# redis:
+#   image: redis:latest
+#   ports:
+#     - "6379:6379"

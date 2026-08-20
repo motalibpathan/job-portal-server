@@ -1,0 +1,9 @@
+# .dockerignore
+node_modules
+dist
+build
+coverage
+.vscode
+.github
+scripts
+sh-scripts
