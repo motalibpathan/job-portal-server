@@ -3,9 +3,11 @@ import {
   jobApplicationFieldTypes,
   jobEmploymentTypes,
   jobRemoteOptions,
+  jobStatuses,
   TJobApplicationFieldType,
   TJobEmploymentType,
   TJobRemoteOption,
+  TJobStatus,
 } from "../../../constants/jobEnums";
 import Company from "../company/company";
 import JobCategory from "../jobCategory/jobCategory";
@@ -40,6 +42,7 @@ export interface IJobModel {
   employmentType: TJobEmploymentType;
   applicationForm: IApplicationFormField[];
   stages: IHiringStage[];
+  status: TJobStatus;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -122,6 +125,11 @@ const jobSchema = new Schema<IJobModel>(
     stages: {
       type: [hiringStageSchema],
       default: () => DEFAULT_HIRING_STAGES,
+    },
+    status: {
+      type: String,
+      enum: jobStatuses,
+      default: "active",
     },
   },
   { timestamps: true },

@@ -56,3 +56,70 @@ export const JOB_HIRING_STAGES = {
 
 export const jobHiringStages = Object.values(JOB_HIRING_STAGES);
 export type TJobHiringStage = (typeof jobHiringStages)[number];
+
+// ─── Company Plan ────────────────────────────────────────────────────────────
+
+export const COMPANY_PLAN = {
+  FREE: "free" as const,
+  BOOTSTRAP: "bootstrap" as const,
+  STARTUP: "startup" as const,
+  BUSINESS: "business" as const,
+};
+
+export const companyPlans = Object.values(COMPANY_PLAN);
+export type TCompanyPlan = (typeof companyPlans)[number];
+
+export const COMPANY_PLAN_TEXT_MAP: Record<TCompanyPlan, string> = {
+  [COMPANY_PLAN.FREE]: "Free",
+  [COMPANY_PLAN.BOOTSTRAP]: "Bootstrap",
+  [COMPANY_PLAN.STARTUP]: "Startup",
+  [COMPANY_PLAN.BUSINESS]: "Business",
+};
+
+export const PLAN_CONFIG: Record<
+  TCompanyPlan,
+  { price: number; activeJobLimit: number; teamMembers: number }
+> = {
+  [COMPANY_PLAN.FREE]: { price: 0, activeJobLimit: 2, teamMembers: 1 },
+  [COMPANY_PLAN.BOOTSTRAP]: { price: 29, activeJobLimit: 3, teamMembers: Infinity },
+  [COMPANY_PLAN.STARTUP]: { price: 49, activeJobLimit: 10, teamMembers: Infinity },
+  [COMPANY_PLAN.BUSINESS]: { price: 129, activeJobLimit: 20, teamMembers: Infinity },
+};
+
+// ─── Job Status ──────────────────────────────────────────────────────────────
+
+export const JOB_STATUS = {
+  ACTIVE: "active" as const,
+  DRAFT: "draft" as const,
+  CLOSED: "closed" as const,
+};
+
+export const jobStatuses = Object.values(JOB_STATUS);
+export type TJobStatus = (typeof jobStatuses)[number];
+
+export const JOB_STATUS_TEXT_MAP: Record<TJobStatus, string> = {
+  [JOB_STATUS.ACTIVE]: "Active",
+  [JOB_STATUS.DRAFT]: "Draft",
+  [JOB_STATUS.CLOSED]: "Closed",
+};
+
+// ─── Subscription Status ─────────────────────────────────────────────────────
+
+export const SUBSCRIPTION_STATUS = {
+  ACTIVE: "active" as const,
+  CANCELLED: "cancelled" as const,
+  EXPIRED: "expired" as const,
+};
+
+export const subscriptionStatuses = Object.values(SUBSCRIPTION_STATUS);
+export type TSubscriptionStatus = (typeof subscriptionStatuses)[number];
+
+// ─── Billing Cycle ───────────────────────────────────────────────────────────
+
+export const BILLING_CYCLE = {
+  MONTHLY: "monthly" as const,
+  YEARLY: "yearly" as const,
+};
+
+export const billingCycles = Object.values(BILLING_CYCLE);
+export type TBillingCycle = (typeof billingCycles)[number];

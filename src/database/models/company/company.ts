@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { companyPlans, TCompanyPlan } from "../../../constants/jobEnums";
 const Schema = mongoose.Schema;
 
 export interface ICompanyModel {
@@ -9,6 +10,8 @@ export interface ICompanyModel {
   logoUrl?: string;
   description?: string;
   websiteUrl?: string;
+  plan: TCompanyPlan;
+  planExpiresAt?: Date;
 
   createdAt: Date;
   updatedAt: Date;
@@ -46,6 +49,14 @@ const companySchema = new Schema<ICompanyDocument>(
     },
     websiteUrl: {
       type: String,
+    },
+    plan: {
+      type: String,
+      enum: companyPlans,
+      default: "free",
+    },
+    planExpiresAt: {
+      type: Date,
     },
   },
   {
